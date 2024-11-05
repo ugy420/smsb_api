@@ -31,16 +31,15 @@ app.post('/login', (req,res) => {
     });
 });
 
-app.post('/signup', (req,res) => {
-    const sql = `INSERT INTO User (name,email,phone,password) values()`;
-    db.query(sql, [req.body.email, req.body.password], (err,results)=> {
-        if(err) return res.json("Error");
-        if(results.length > 0) {
-            return res.json({mesasge: "Login Successfully", userId: results[0].id});
+app.post('/signup', (req, res) => {
+    const sql = `INSERT INTO User (name, email, phone, password) VALUES (?, ?, ?, ?)`;
+    const { name, email, phone, password } = req.body;
+    
+    db.query(sql, [name, email, phone, password], (err, results) => {
+        if (err) {
+            return res.json("Error");
         }
-        else{
-            return res.json("Login Failed ");
-        }
+        return res.json({ message: "Signup successful", userId: results.insertId });
     });
 });
 
