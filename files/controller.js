@@ -52,10 +52,23 @@ const getBookingsbd = (req,res) => {
     });
 };
 
+const posBooking = (req, res) => {
+    db.query(queries.insBooking, [req.body.userId, req.body.groundId, req.body.date, req.body.time], (err, results) => {
+        if (err) {
+            // Send a JSON response with an error message and error details
+            return res.status(500).json({ error: "An error occurred while adding the booking", details: err });
+        }
+        // Send a successful response
+        return res.status(200).json({ message: "Added Successfully" });
+    });
+};
+
+
 module.exports = 
 { 
     getGroundId,
     getGrounds,
     getBookings,
-    getBookingsbd
+    getBookingsbd,
+    posBooking,
 };

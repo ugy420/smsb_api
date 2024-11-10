@@ -8,11 +8,14 @@ const selBookingsbd =
     JOIN user u ON b.user_id = u.id
     WHERE ground_id = ? AND booking_date = ?
 `;
+const insBooking = `INSERT INTO books (user_id, ground_id, booking_date, booking_time) VALUES (?, ?, ?, ?)`; 
+
 
 module.exports = 
 {
     selGroundId,
     selGrounds,
     selBookings,
-    selBookingsbd
+    selBookingsbd,
+    insBooking
 };
