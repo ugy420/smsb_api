@@ -63,6 +63,17 @@ const posBooking = (req, res) => {
     });
 };
 
+const getEvents = (req,res) => {
+    db.query(queries.getEvents, (error, results) =>{
+        if (error) {
+            console.error('Error fetching:', error);
+            res.status(500).send('Error fetching');
+        } else {
+            res.status(200).json(results);
+        }
+    });
+};
+
 
 module.exports = 
 { 
@@ -71,4 +82,5 @@ module.exports =
     getBookings,
     getBookingsbd,
     posBooking,
+    getEvents
 };

@@ -14,4 +14,6 @@ router.get("/getBookingsbd/:id", controller.getBookingsbd);
 
 router.post("/insBooking", controller.posBooking);
 
+router.get("/getevents", controller.getEvents);
+
 module.exports = router;
