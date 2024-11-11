@@ -2,6 +2,19 @@ const selGroundId = 'SELECT * FROM ground WHERE id = ?';
 
 const selGrounds = 'SELECT * FROM ground';
 
+const selBookingsAll = `
+SELECT 
+    books.*, 
+    user.name AS user_name, 
+    ground.name AS ground_name
+FROM 
+    books
+JOIN 
+    user ON books.user_id = user.id
+JOIN 
+    ground ON books.ground_id = ground.id;
+`
+
 const selBookings = 'SELECT * FROM books WHERE id = ?';
 
 const selBookingsbd = 
@@ -58,6 +71,7 @@ module.exports =
 {
     selGroundId,
     selGrounds,
+    selBookingsAll,
     selBookings,
     selBookingsbd,
     insBooking,

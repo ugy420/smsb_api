@@ -44,6 +44,17 @@ const getGrounds = (req, res) => {
     });
 };
 
+const getBookingsAll = (req, res) => {
+    db.query(queries.selBookingsAll, (error, results) => {
+        if (error) throw error;
+        if (results && results.length > 0) {
+            return res.json(results);
+        } else {
+            return res.json({ message: "No bookings found" });
+        }
+    });
+}
+
 const getBookings = (req, res) => {
     const {id} = req.params;
 
@@ -295,6 +306,7 @@ module.exports =
 {
     getGroundId,
     getGrounds,
+    getBookingsAll,
     getBookings,
     getBookingsbd,
     posBooking,

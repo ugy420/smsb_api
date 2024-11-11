@@ -7,6 +7,8 @@ router.get("/getGround/:id", controller.getGroundId);
 
 router.get("/allGround", controller.getGrounds);
 
+router.get("/allBookings", controller.getBookingsAll);
+
 router.get("/getBookings/:id",controller.getBookings);
 
 router.get("/getBookingsbd/:id", controller.getBookingsbd);
