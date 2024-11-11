@@ -13,6 +13,9 @@ const insBooking = `INSERT INTO books (user_id, ground_id, booking_date, booking
 
 const getEvents = 'SELECT * FROM events';
 
+const selBookingsByUser = `
+    SELECT * FROM books WHERE user_id = ?
+`;
 
 module.exports = 
 {
@@ -21,5 +24,6 @@ module.exports =
     selBookings,
     selBookingsbd,
     insBooking,
-    getEvents
+    getEvents,
+    selBookingsByUser
 };

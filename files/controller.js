@@ -74,6 +74,18 @@ const getEvents = (req,res) => {
     });
 };
 
+const getBookingU = (req, res) => {
+    const { id } = req.params;
+
+    db.query(queries.selBookingsByUser, [id], (error, results) => {
+        if (error) {
+            console.error("Error fetching user's bookings:", error);
+            res.status(500).send("Error fetching user's bookings");
+        } else {
+            res.status(200).json(results); // Send the results as JSON
+        }
+    });
+};
 
 module.exports = 
 { 
@@ -82,5 +94,6 @@ module.exports =
     getBookings,
     getBookingsbd,
     posBooking,
-    getEvents
+    getEvents,
+    getBookingU
 };
