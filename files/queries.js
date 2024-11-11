@@ -31,11 +31,15 @@ const selGroundCount = 'SELECT COUNT(*) AS count FROM ground';
 
 const selBooksCount = 'SELECT COUNT(*) AS count FROM books';
 
+const selEventsCount = 'SELECT COUNT(*) AS count FROM events';
+
 const selUsers = 'SELECT * FROM user';
 
 const delUser = 'DELETE FROM user WHERE id=?';
 
 const delGround = 'DELETE FROM ground where id=?';
+
+const delEvent = 'DELETE FROM events where id=?';
 
 const putGround = `
     UPDATE ground
@@ -47,6 +51,8 @@ const putGround = `
 `
 
 const insGround = 'INSERT INTO ground (name, status, img) VALUES (?, ?, ?)';
+
+const insEvent = 'INSERT INTO events (name, description, grnId, img_slot) VALUES (?, ?, ?, ?)';
 
 module.exports = 
 {
@@ -61,9 +67,12 @@ module.exports =
     selUserCount,
     selGroundCount,
     selBooksCount,
+    selEventsCount,
     selUsers,
     delUser,
     delGround,
+    delEvent,
     putGround,
-    insGround
+    insGround,
+    insEvent
 };

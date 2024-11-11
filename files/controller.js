@@ -2,7 +2,6 @@ const queries = require('./queries');
 const db = require('../db');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs')
 
 // Set up multer storage options
 const storage = multer.diskStorage({
@@ -176,6 +175,17 @@ const selBooksCount = (req, res) => {
     });
 };
 
+const selEventsCount = (req, res) => {
+    db.query(queries.selEventsCount, (error, result) => {
+        if (error) {
+            console.error('Error fetching count: ', error);
+            return res.status(500).json({ error: 'An error occurred while fetching count' });
+        } else {
+            res.status(200).json({ count: result[0].count });
+        }
+    });
+};
+
 const selUsers = (req, res) => {
     db.query(queries.selUsers, (error,results) => {
         if(error){
@@ -216,6 +226,20 @@ const delGround = (req, res) => {
     });
 };
 
+const delEvent = (req, res) => {
+    const { id } = req.params;
+    db.query(queries.delEvent, [id], (error, results) => {
+      if (error) {
+        console.error("Error deleting event:", error);
+        res.status(500).send("Error deleting event");
+      } else if (results.affectedRows > 0) {
+        res.status(200).json({ success: true, message: 'Deleted Successfully' });
+      } else {
+        res.status(404).json({ success: false, message: 'Nothing to delete ' +id });
+      }
+    });
+};
+
 const putGround = (req, res) => {
     const { id } = req.params;
     db.query(queries.putGround, [id], (error, results) => {
@@ -247,6 +271,24 @@ const insGround = (req, res) => {
     });
 };
   
+const insEvent = (req, res) => {
+    const { name, description, grnId } = req.body;
+    const ign = req.file.filename;
+    const gid = parseInt(grnId, 10);
+    if (isNaN(gid)) {
+        return res.status(400).json({ message: 'Invalid ground ID' });
+    }
+    const values = [name, description, gid, ign];
+
+    db.query(queries.insEvent, values, (err, result) => {
+      if (err) {
+        console.error('Error saving to database:', err);
+        return res.status(500).json({ message: 'Error saving event data' });
+      }
+      console.log('New event added:', result);
+      res.status(200).json({ name, img: ign });
+    });
+};
   
 
 module.exports = 
@@ -262,10 +304,13 @@ module.exports =
     selUserCount,
     selGroundCount,
     selBooksCount,
+    selEventsCount,
     selUsers,
     delUser,
     delGround,
+    delEvent,
     putGround,
     insGround,
+    insEvent,
     upload
 };
