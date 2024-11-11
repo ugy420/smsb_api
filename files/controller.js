@@ -123,8 +123,68 @@ const delBooking = (req, res) => {
       });
 };
 
+const selUserCount = (req, res) => {
+    db.query(queries.selUserCount, (error, result) => {
+        if (error) {
+            console.error('Error fetching user count: ', error);
+            return res.status(500).json({ error: 'An error occurred while fetching user count' });
+        } else {
+            res.status(200).json({ count: result[0].count }); // Assuming result[0].count holds the count
+        }
+    });
+};
+
+const selGroundCount = (req, res) => {
+    db.query(queries.selGroundCount, (error, result) => {
+        if (error) {
+            console.error('Error fetching count: ', error);
+            return res.status(500).json({ error: 'An error occurred while fetching count' });
+        } else {
+            res.status(200).json({ count: result[0].count }); // Assuming result[0].count holds the count
+        }
+    });
+};
+
+const selBooksCount = (req, res) => {
+    db.query(queries.selBooksCount, (error, result) => {
+        if (error) {
+            console.error('Error fetching count: ', error);
+            return res.status(500).json({ error: 'An error occurred while fetching count' });
+        } else {
+            res.status(200).json({ count: result[0].count }); // Assuming result[0].count holds the count
+        }
+    });
+};
+
+const selUsers = (req, res) => {
+    db.query(queries.selUsers, (error,results) => {
+        if(error){
+            console.error('Error fetching members: ', error);
+            return res.status(500).json({ error: 'An error occurred while fetching members' });
+        }
+        else{
+            res.status(200).json(results);
+        }
+    });
+}
+
+const delUser = (req, res) => {
+  const { id } = req.params;
+  db.query(queries.delUser, [id], (error, results) => {
+    if (error) {
+      console.error("Error canceling user:", error);
+      res.status(500).send("Error deleting user");
+    } else if (results.affectedRows > 0) { // Use 'results' here
+      res.status(200).json({ success: true, message: 'Deleted Successfully' });
+    } else {
+      res.status(404).json({ success: false, message: 'Nothing to delete ' +id });
+    }
+  });
+};
+
+
 module.exports = 
-{ 
+{
     getGroundId,
     getGrounds,
     getBookings,
@@ -132,5 +192,10 @@ module.exports =
     posBooking,
     getEvents,
     getBookingU,
-    delBooking
+    delBooking,
+    selUserCount,
+    selGroundCount,
+    selBooksCount,
+    selUsers,
+    delUser
 };

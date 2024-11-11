@@ -25,6 +25,16 @@ const selBookingsByUser = `
 
 const delBooking = 'DELETE FROM books WHERE user_id = ? AND ground_id = ? AND booking_date = ? AND booking_time = ?';
 
+const selUserCount = 'SELECT COUNT(*) AS count FROM user';
+
+const selGroundCount = 'SELECT COUNT(*) AS count FROM ground';
+
+const selBooksCount = 'SELECT COUNT(*) AS count FROM books';
+
+const selUsers = 'SELECT * FROM user';
+
+const delUser = 'DELETE FROM user WHERE id=?';
+
 module.exports = 
 {
     selGroundId,
@@ -34,5 +44,10 @@ module.exports =
     insBooking,
     getEvents,
     selBookingsByUser,
-    delBooking
+    delBooking,
+    selUserCount,
+    selGroundCount,
+    selBooksCount,
+    selUsers,
+    delUser
 };

@@ -19,4 +19,14 @@ router.get("/getBookingU/:id", controller.getBookingU);
 
 router.delete("/delBooking", controller.delBooking);
 
+router.get("/getUserCount", controller.selUserCount);
+
+router.get("/getGroundCount", controller.selGroundCount);
+
+router.get("/getBooksCount", controller.selBooksCount);
+
+router.get("/getMembers", controller.selUsers);
+
+router.delete("/deleteUser/:id", controller.delUser);
+
 module.exports = router;
