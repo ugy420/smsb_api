@@ -1,6 +1,9 @@
 const selGroundId = 'SELECT * FROM ground WHERE id = ?';
+
 const selGrounds = 'SELECT * FROM ground';
+
 const selBookings = 'SELECT * FROM books WHERE id = ?';
+
 const selBookingsbd = 
 `
     SELECT b.booking_time,u.name,u.phone
@@ -14,8 +17,13 @@ const insBooking = `INSERT INTO books (user_id, ground_id, booking_date, booking
 const getEvents = 'SELECT * FROM events';
 
 const selBookingsByUser = `
-    SELECT * FROM books WHERE user_id = ?
+    SELECT b.user_id, b.ground_id, b.booking_date, b.booking_time,g.name
+    FROM books b
+    JOIN ground g ON b.ground_id = g.id
+    WHERE user_id = ?
 `;
+
+const delBooking = 'DELETE FROM books WHERE user_id = ? AND ground_id = ? AND booking_date = ? AND booking_time = ?';
 
 module.exports = 
 {
@@ -25,5 +33,6 @@ module.exports =
     selBookingsbd,
     insBooking,
     getEvents,
-    selBookingsByUser
+    selBookingsByUser,
+    delBooking
 };

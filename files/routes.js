@@ -3,7 +3,6 @@ const controller = require('./controller');
 
 const router = Router();
 
-
 router.get("/getGround/:id", controller.getGroundId);
 
 router.get("/allGround", controller.getGrounds);
@@ -16,6 +15,8 @@ router.post("/insBooking", controller.posBooking);
 
 router.get("/getevents", controller.getEvents);
 
-router.get("/getBookingU/:id",controller.getBookingU);
+router.get("/getBookingU/:id", controller.getBookingU);
+
+router.delete("/delBooking", controller.delBooking);
 
 module.exports = router;

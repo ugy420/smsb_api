@@ -87,6 +87,20 @@ const getBookingU = (req, res) => {
     });
 };
 
+const delBooking = (req, res) => {
+    const { user_id, ground_id, booking_date, booking_time } = req.body;
+    db.query(queries.delBooking, [user_id, ground_id, booking_date, booking_time], (error, result) => {
+        if (error) {
+          console.error("Error canceling booking:", error);
+          res.status(500).send("Error canceling booking");
+        } else if (result.affectedRows > 0) {
+          res.status(200).json({ success: true, message: 'Booking canceled successfully' });
+        } else {
+          res.status(404).json({ success: false, message: 'No booking found to cancel' });
+        }
+      });
+};
+
 module.exports = 
 { 
     getGroundId,
@@ -95,5 +109,6 @@ module.exports =
     getBookingsbd,
     posBooking,
     getEvents,
-    getBookingU
+    getBookingU,
+    delBooking
 };
