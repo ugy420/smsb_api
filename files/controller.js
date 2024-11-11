@@ -53,15 +53,37 @@ const getBookingsbd = (req,res) => {
 };
 
 const posBooking = (req, res) => {
-    db.query(queries.insBooking, [req.body.userId, req.body.groundId, req.body.date, req.body.time], (err, results) => {
-        if (err) {
-            // Send a JSON response with an error message and error details
-            return res.status(500).json({ error: "An error occurred while adding the booking", details: err });
+    const { userId, groundId, date, time } = req.body;
+    db.query(
+        'SELECT * FROM books WHERE user_id = ? AND ground_id = ? AND booking_date = ? AND booking_time = ?',
+        [userId, groundId, date, time],
+        (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: "An error occurred while checking for duplicates", details: err });
+            }
+            if (results.length > 0) {
+                return res.status(409).json({
+                    status: 'duplicate',
+                    message: 'This booking already exists. Please select another time or date.',
+                });
+            }
+
+            db.query(
+                queries.insBooking, 
+                [userId, groundId, date, time],
+                (err, results) => {
+                    if (err) {
+                        // Handle the error during the insert operation
+                        return res.status(500).json({ error: "An error occurred while adding the booking", details: err });
+                    }
+                    // Send a success response if the booking was added
+                    return res.status(200).json({ message: "Booking added successfully" });
+                }
+            );
         }
-        // Send a successful response
-        return res.status(200).json({ message: "Added Successfully" });
-    });
+    );
 };
+
 
 const getEvents = (req,res) => {
     db.query(queries.getEvents, (error, results) =>{
