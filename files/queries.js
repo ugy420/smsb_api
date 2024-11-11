@@ -35,6 +35,19 @@ const selUsers = 'SELECT * FROM user';
 
 const delUser = 'DELETE FROM user WHERE id=?';
 
+const delGround = 'DELETE FROM ground where id=?';
+
+const putGround = `
+    UPDATE ground
+    SET status = CASE
+                    WHEN status = 'Active' THEN 'Inactive'
+                    WHEN status = 'Inactive' THEN 'Active'
+                END
+    WHERE id = ?;
+`
+
+const insGround = 'INSERT INTO ground (name, status, img) VALUES (?, ?, ?)';
+
 module.exports = 
 {
     selGroundId,
@@ -49,5 +62,8 @@ module.exports =
     selGroundCount,
     selBooksCount,
     selUsers,
-    delUser
+    delUser,
+    delGround,
+    putGround,
+    insGround
 };

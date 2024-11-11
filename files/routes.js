@@ -29,4 +29,10 @@ router.get("/getMembers", controller.selUsers);
 
 router.delete("/deleteUser/:id", controller.delUser);
 
+router.delete("/deleteGround/:id", controller.delGround);
+
+router.put("/updateGround/:id", controller.putGround);
+
+router.post("/addGround", controller.upload.single('img'), controller.insGround);
+
 module.exports = router;

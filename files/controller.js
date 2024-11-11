@@ -1,5 +1,25 @@
 const queries = require('./queries');
 const db = require('../db');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs')
+
+// Set up multer storage options
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      // Use __dirname to get the current directory and navigate to the assets directory
+      const uploadDir = path.join(__dirname, '..', '..', 'smsb', 'src', 'assets'); // Go two levels up from smsb_api to smsb
+
+      // Set the destination for the uploaded files
+      cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+      // Generate a unique filename for the image using the original extension
+      cb(null, Date.now() + path.extname(file.originalname)); // Using timestamp to ensure uniqueness
+    }
+  });
+
+const upload = multer({ storage: storage });
 
 const getGroundId = (req, res) => {
     const {id} = req.params;
@@ -182,6 +202,52 @@ const delUser = (req, res) => {
   });
 };
 
+const delGround = (req, res) => {
+    const { id } = req.params;
+    db.query(queries.delGround, [id], (error, results) => {
+      if (error) {
+        console.error("Error deleting ground:", error);
+        res.status(500).send("Error deleting ground");
+      } else if (results.affectedRows > 0) {
+        res.status(200).json({ success: true, message: 'Deleted Successfully' });
+      } else {
+        res.status(404).json({ success: false, message: 'Nothing to delete ' +id });
+      }
+    });
+};
+
+const putGround = (req, res) => {
+    const { id } = req.params;
+    db.query(queries.putGround, [id], (error, results) => {
+      if (error) {
+        console.error("Error updating status:", error);
+        res.status(500).send("Error updating status");
+      } else if (results.affectedRows > 0) {
+        res.status(200).json({ success: true, message: 'Status updated successfully' });
+      } else {
+        res.status(404).json({ success: false, message: `Ground with ID ${id} not found` });
+      }
+    });
+};
+
+const insGround = (req, res) => {
+    const { name, status } = req.body;
+
+    const imgName = req.file.filename;
+
+    const values = [name, status, imgName];
+
+    db.query(queries.insGround, values, (err, result) => {
+      if (err) {
+        console.error('Error saving to database:', err);
+        return res.status(500).json({ message: 'Error saving ground data' });
+      }
+      console.log('New ground added:', result);
+      res.status(200).json({ name, status, img: imgName });
+    });
+};
+  
+  
 
 module.exports = 
 {
@@ -197,5 +263,9 @@ module.exports =
     selGroundCount,
     selBooksCount,
     selUsers,
-    delUser
+    delUser,
+    delGround,
+    putGround,
+    insGround,
+    upload
 };
